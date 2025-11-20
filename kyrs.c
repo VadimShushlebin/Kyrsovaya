@@ -1,4 +1,4 @@
-﻿#define _CRT_SECURE_NO_WARNINGS
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -6,14 +6,13 @@
 
 typedef struct {
     char name[50];
-    char process_level[20];
-    char capabilities[100];
-    double cost;
-    char complexity[10];
-    int ai;
-    int monitoring;
+    char ai_level[20];
+    int process_count;
+    char monitoring_capabilities[100];
     float accuracy;
-    char integration[100];
+    double license_cost;
+    char erp_integration[100];
+    char setup_complexity[20];
 } RPA_System;
 
 RPA_System input_data();
@@ -103,43 +102,39 @@ RPA_System input_data() {
     printf("Название системы: ");
     scanf("%49s", system.name);
 
-    printf("Уровень процессов: ");
-    scanf("%19s", system.process_level);
+    printf("Уровень ИИ (низкий/средний/высокий): ");
+    scanf("%19s", system.ai_level);
 
-    printf("Возможности выполнения: ");
-    scanf(" %[^\n]", system.capabilities);
+    printf("Количество процессов: ");
+    scanf("%d", &system.process_count);
 
-    printf("Стоимость ERP: ");
-    scanf("%lf", &system.cost);
+    printf("Возможности мониторинга: ");
+    scanf(" %[^\n]", system.monitoring_capabilities);
 
-    printf("Сложность настройки (низкая/средняя/высокая): ");
-    scanf("%9s", system.complexity);
-
-    printf("Наличие ИИ (1-да, 0-нет): ");
-    scanf("%d", &system.ai);
-
-    printf("Количество мониторинга (число): ");
-    scanf("%d", &system.monitoring);
-
-    printf("Точность лицензии (в процентах): ");
+    printf("Точность выполнения (в процентах): ");
     scanf("%f", &system.accuracy);
 
-    printf("Интеграция: ");
-    scanf(" %[^\n]", system.integration);
+    printf("Стоимость лицензии: ");
+    scanf("%lf", &system.license_cost);
+
+    printf("Интеграция с ERP: ");
+    scanf(" %[^\n]", system.erp_integration);
+
+    printf("Сложность настройки (низкая/средняя/высокая): ");
+    scanf("%19s", system.setup_complexity);
 
     return system;
 }
 
 void output_data(RPA_System system) {
     printf("Название: %s\n", system.name);
-    printf("Уровень процессов: %s\n", system.process_level);
-    printf("Возможности выполнения: %s\n", system.capabilities);
-    printf("Стоимость ERP: %.2f\n", system.cost);
-    printf("Сложность настройки: %s\n", system.complexity);
-    printf("Наличие ИИ: %s\n", system.ai ? "да" : "нет");
-    printf("Количество мониторинга: %d\n", system.monitoring);
-    printf("Точность лицензии: %.1f%%\n", system.accuracy);
-    printf("Интеграция: %s\n", system.integration);
+    printf("Уровень ИИ: %s\n", system.ai_level);
+    printf("Количество процессов: %d\n", system.process_count);
+    printf("Возможности мониторинга: %s\n", system.monitoring_capabilities);
+    printf("Точность выполнения: %.1f%%\n", system.accuracy);
+    printf("Стоимость лицензии: %.2f\n", system.license_cost);
+    printf("Интеграция с ERP: %s\n", system.erp_integration);
+    printf("Сложность настройки: %s\n", system.setup_complexity);
 }
 
 void load_from_file(RPA_System systems[], int* count) {
