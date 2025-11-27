@@ -61,15 +61,15 @@ int main() {
             break;
 
         case 7:
-            printf("\nВыход из программы...\n");
+            printf("\nВыход из программы\n");
             break;
 
         default:
-            printf("\nНеверный выбор! Попробуйте снова.\n");
+            printf("\nНеверный выбор\n");
         }
 
         if (choice != 7) {
-            printf("\nНажмите Enter для продолжения...");
+            printf("\nНажмите Enter для продолжения");
             getchar();
         }
     }
@@ -80,7 +80,7 @@ int main() {
 int show_menu() {
     int choice;
 
-    printf("\n=== Меню управления RPA-системами ===\n");
+    printf("\nМеню управления RPA-системами\n");
     printf("1. Загрузка данных из файла\n");
     printf("2. Просмотр всех записей\n");
     printf("3. Поиск по заданному диапазону\n");
@@ -138,17 +138,17 @@ void output_data(RPA_System system) {
 }
 
 void load_from_file(RPA_System systems[], int* count) {
-    printf("\n=== Загрузка данных из файла ===\n");
+    printf("\nЗагрузка данных из файла\n");
     printf("Функция в разработке\n");
 }
 
 void view_all_records(RPA_System systems[], int count) {
-    printf("\n=== Просмотр всех записей ===\n");
+    printf("\nПросмотр всех записей\n");
     if (count == 0) {
         printf("Записей нет. Сначала добавьте запись.\n");
     }
     else {
-        printf("\n--- Все записи (%d) ---\n", count);
+        printf("\nВсе записи (%d)\n", count);
         for (int i = 0; i < count; i++) {
             printf("\n--- Запись %d ---\n", i + 1);
             output_data(systems[i]);
@@ -157,17 +157,17 @@ void view_all_records(RPA_System systems[], int count) {
 }
 
 void search_by_range(RPA_System systems[], int count) {
-    printf("\n=== Поиск по заданному диапазону ===\n");
+    printf("\nПоиск по заданному диапазону\n");
     printf("Функция в разработке\n");
 }
 
 void sort_data(RPA_System systems[], int count) {
-    printf("\n=== Сортировка данных ===\n");
+    printf("\nСортировка данных\n");
     printf("Функция в разработке\n");
 }
 
 void add_new_record(RPA_System systems[], int* count) {
-    printf("\n=== Добавление новой записи ===\n");
+    printf("\nДобавление новой записи\n");
     if (*count < MAX_RECORDS) {
         systems[*count] = input_data();
         (*count)++;
@@ -179,6 +179,6 @@ void add_new_record(RPA_System systems[], int* count) {
 }
 
 void save_to_file(RPA_System systems[], int count) {
-    printf("\n=== Сохранение данных в файл ===\n");
+    printf("\nСохранение данных в файл\n");
     printf("Функция в разработке\n");
 }
