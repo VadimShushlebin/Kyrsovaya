@@ -6,13 +6,13 @@
 
 typedef struct {
     char name[50];
-    char ai_level[20];
-    int process_count;
-    char monitoring_capabilities[100];
+    char ai[20];
+    int proc;
+    char monitor[100];
     float accuracy;
-    double license_cost;
-    char erp_integration[100];
-    char setup_complexity[20];
+    double cost;
+    char erp[100];
+    char dif[20];
 } RPA_System;
 
 RPA_System input_data();
@@ -103,38 +103,38 @@ RPA_System input_data() {
     scanf("%49s", system.name);
 
     printf("Уровень ИИ (низкий/средний/высокий): ");
-    scanf("%19s", system.ai_level);
+    scanf("%19s", system.ai);
 
     printf("Количество процессов: ");
-    scanf("%d", &system.process_count);
+    scanf("%d", &system.proc);
 
     printf("Возможности мониторинга: ");
-    scanf(" %[^\n]", system.monitoring_capabilities);
+    scanf(" %[^\n]", system.monitor);
 
     printf("Точность выполнения (в процентах): ");
     scanf("%f", &system.accuracy);
 
     printf("Стоимость лицензии: ");
-    scanf("%lf", &system.license_cost);
+    scanf("%lf", &system.cost);
 
     printf("Интеграция с ERP: ");
-    scanf(" %[^\n]", system.erp_integration);
+    scanf(" %[^\n]", system.erp);
 
     printf("Сложность настройки (низкая/средняя/высокая): ");
-    scanf("%19s", system.setup_complexity);
+    scanf("%19s", system.dif);
 
     return system;
 }
 
 void output_data(RPA_System system) {
     printf("Название: %s\n", system.name);
-    printf("Уровень ИИ: %s\n", system.ai_level);
-    printf("Количество процессов: %d\n", system.process_count);
-    printf("Возможности мониторинга: %s\n", system.monitoring_capabilities);
+    printf("Уровень ИИ: %s\n", system.ai);
+    printf("Количество процессов: %d\n", system.proc);
+    printf("Возможности мониторинга: %s\n", system.monitor);
     printf("Точность выполнения: %.1f%%\n", system.accuracy);
-    printf("Стоимость лицензии: %.2f\n", system.license_cost);
-    printf("Интеграция с ERP: %s\n", system.erp_integration);
-    printf("Сложность настройки: %s\n", system.setup_complexity);
+    printf("Стоимость лицензии: %.2f\n", system.cost);
+    printf("Интеграция с ERP: %s\n", system.erp);
+    printf("Сложность настройки: %s\n", system.dif);
 }
 
 void load_from_file(RPA_System systems[], int* count) {
