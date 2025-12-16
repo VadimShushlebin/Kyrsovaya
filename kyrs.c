@@ -3,8 +3,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include <time.h>
 
-#define max 100
+#define MAX 100
 
 typedef struct {
     char name[50];
@@ -27,14 +28,23 @@ void sort_data(rpa_sys* systems, int count);
 void add_new_record(rpa_sys* systems, int* count);
 void save_to_file(rpa_sys* systems, int count);
 int compare(const void* a, const void* b);
+int getRandomNumber(int min, int maxxx);
+void generate_random_data(rpa_sys* systems, int* count);
+
+void generate_random_name(char* name);
+void generate_random_monitor(char* monitor);
+void generate_random_erp(char* erp);
+void generate_random_diffic(char* difficulty);
 
 int main() {
     system("chcp 1251");
-    rpa_sys systems[max];
+    rpa_sys systems[MAX];
     int count = 0;
     int choice = 0;
 
-    while (choice != 7) {
+    srand(time(NULL));
+
+    while (choice != 8) {
         choice = show_menu();
 
         switch (choice) {
@@ -57,13 +67,16 @@ int main() {
             save_to_file(systems, count);
             break;
         case 7:
+            generate_random_data(systems, &count);
+            break;
+        case 8:
             printf("\nВыход из программы\n");
             break;
         default:
             printf("\nНеверный выбор\n");
         }
 
-        if (choice != 7) {
+        if (choice != 8) {
             printf("\nНажмите Enter для продолжения");
             getchar();
         }
@@ -81,7 +94,8 @@ int show_menu() {
     printf("4. Сортировка данных\n");
     printf("5. Добавление новой записи\n");
     printf("6. Сохранение данных в файл\n");
-    printf("7. Выход\n");
+    printf("7. Заполнение случайными данными\n");
+    printf("8. Выход\n");
     printf("Выберите пункт меню: ");
     scanf("%d", &choice);
     while (getchar() != '\n');
@@ -127,7 +141,7 @@ void load_from_file(rpa_sys* systems, int* count) {
         *count = 0;
         return;
     }
-    *count = fread(systems, sizeof(rpa_sys), max, file);
+    *count = fread(systems, sizeof(rpa_sys), MAX, file);
     fclose(file);
     if (*count > 0) {
         printf("\nУспешно загружено %d записей из файла 'rpa_systems.txt'.\n", *count);
@@ -182,8 +196,8 @@ int compare(const void* a, const void* b) {
     const rpa_sys* system1 = (const rpa_sys*)a;
     const rpa_sys* system2 = (const rpa_sys*)b;
 
-    double cubicA = pow(system1->accuracy / 100.0, 3);
-    double cubicB = pow(system2->accuracy / 100.0, 3);
+    double cubicA = pow(system1->accuracy / 100, 1.0/3.0);
+    double cubicB = pow(system2->accuracy / 100, 1.0/3.0);
 
     if (cubicA < cubicB) return 1;
     if (cubicA > cubicB) return -1;
@@ -191,7 +205,6 @@ int compare(const void* a, const void* b) {
 }
 
 void sort_data(rpa_sys* systems, int count) {
-
     if (count == 0) {
         printf("Нет данных для сортировки.\n");
         return;
@@ -203,13 +216,13 @@ void sort_data(rpa_sys* systems, int count) {
 
 void add_new_record(rpa_sys* systems, int* count) {
     printf("\nДобавление новой записи\n");
-    if (*count < max) {
+    if (*count < MAX) {
         systems[*count] = input_data();
         (*count)++;
         printf("Запись успешно добавлена! Всего записей: %d\n", *count);
     }
     else {
-        printf("Достигнут максимальный лимит записей (%d)!\n", max);
+        printf("Достигнут максимальный лимит записей (%d)!\n", MAX);
     }
 }
 
@@ -228,3 +241,55 @@ void save_to_file(rpa_sys* systems, int count) {
         printf("\nОшибка при сохранении данных!\n");
     }
 }
+
+int getRandomNumber(int min, int maxxx) {
+    return rand() % (maxxx - min + 1) + min;
+}
+
+
+void generate_random_name(char* name) {
+    char* names[] = { "UiPath", "AutomationAnywhere", "BluePrism", "Primo"};
+
+    strcpy(name, names[rand() % 4]);
+
+}
+
+
+void generate_random_monitor(char* monitor) {
+    char* monitors[] = { "мониторинг в реальном времени", "аналитика производительности", "оповещения об ошибках", "отчеты о выполнениях"};
+    strcpy(monitor, monitors[rand() % 4]);
+}
+
+void generate_random_erp(char* erp) {
+    char* erps[] = { "Галактика", "1C", "Odoo", "Oracle" };
+    strcpy(erp, erps[rand() % 4]);
+}
+
+void generate_random_diffic(char* difficulty) {
+    char* diffff[] = { "низкая", "средняя", "высокая" };
+    strcpy(difficulty, diffff[rand() % 3]);
+}
+
+void generate_random_data(rpa_sys* systems, int* count) {
+    int num_r;
+
+    printf("Сколько записей сгенерировать?");
+    scanf("%d", &num_r);
+
+
+    for (int i = 0; i < num_r; i++) {
+        int index = *count + i;
+
+        generate_random_name(systems[index].name);
+        generate_random_diffic(systems[index].ai);
+        systems[index].proc = getRandomNumber(0, 100);
+        generate_random_monitor(systems[index].monitor);
+        systems[index].accuracy = getRandomNumber(0, 100);
+        systems[index].cost = getRandomNumber(10, 1000);
+        generate_random_erp(systems[index].erp);
+        generate_random_diffic(systems[index].dif);
+    }
+
+    *count += num_r;
+}
+
