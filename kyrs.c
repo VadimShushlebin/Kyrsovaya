@@ -22,18 +22,18 @@ rpa_sys input_data();
 void output_data(rpa_sys system);
 int show_menu();
 int load_from_file(rpa_sys* systems);
-int view_all_records(rpa_sys* systems, int count);
-int search_by_range(rpa_sys* systems, int count);
-int sort_data(rpa_sys* systems, int count);
+void view_all_records(rpa_sys* systems, int count);
+void search_by_range(rpa_sys* systems, int count);
+void sort_data(rpa_sys* systems, int count);
 int add_new_record(rpa_sys* systems, int count);
 int save_to_file(rpa_sys* systems, int count);
 int compare(const void* a, const void* b);
 int getRandomNumber(int min, int maxxx);
 int generate_random_data(rpa_sys* systems, int count);
-int generate_random_name(char* name);
-int generate_random_monitor(char* monitor);
-int generate_random_erp(char* erp);
-int generate_random_diffic(char* difficulty);
+void generate_random_name(char* name);
+void generate_random_monitor(char* monitor);
+void generate_random_erp(char* erp);
+void generate_random_diffic(char* difficulty);
 
 int main() {
     system("chcp 1251");
@@ -50,27 +50,15 @@ int main() {
         case 1:
             count = load_from_file(systems);
             break;
-        case 2: {
-            int records_shown = view_all_records(systems, count);
-            if (records_shown == 0 && count > 0) {
-                printf("Не удалось показать записи\n");
-            }
+        case 2:
+            view_all_records(systems, count);
             break;
-        }
-        case 3: {
-            int found = search_by_range(systems, count);
-            if (found == 0 && count > 0) {
-                printf("Записи не найдены\n");
-            }
+        case 3:
+            search_by_range(systems, count);
             break;
-        }
-        case 4: {
-            int sorted = sort_data(systems, count);
-            if (sorted == 0 && count > 0) {
-                printf("Не удалось отсортировать данные\n");
-            }
+        case 4:
+            sort_data(systems, count);
             break;
-        }
         case 5:
             count = add_new_record(systems, count);
             break;
@@ -174,32 +162,27 @@ int load_from_file(rpa_sys* systems) {
     return count;
 }
 
-int view_all_records(rpa_sys* systems, int count) {
-    int shown = 0;
-
+void view_all_records(rpa_sys* systems, int count) {
     printf("\nПросмотр всех записей\n");
     if (count == 0) {
         printf("Записей нет. Сначала добавьте запись.\n");
-        return 0;
+        return;
     }
-    else {
-        printf("\nВсе записи (%d)\n", count);
-        for (int i = 0; i < count; i++) {
-            printf("\n--- Запись %d ---\n", i + 1);
-            output_data(systems[i]);
-            shown++;
-        }
-        return shown;
+
+    printf("\nВсе записи (%d)\n", count);
+    for (int i = 0; i < count; i++) {
+        printf("\n--- Запись %d ---\n", i + 1);
+        output_data(systems[i]);
     }
 }
 
-int search_by_range(rpa_sys* systems, int count) {
+void search_by_range(rpa_sys* systems, int count) {
     double min, maxx;
     int found = 0;
 
     if (count == 0) {
         printf("Сначала добавьте запись\n");
-        return 0;
+        return;
     }
 
     printf("Введите первое число диапазона: ");
@@ -221,8 +204,6 @@ int search_by_range(rpa_sys* systems, int count) {
     else {
         printf("Найдено записей: %d\n", found);
     }
-
-    return found;
 }
 
 int compare(const void* a, const void* b) {
@@ -237,15 +218,14 @@ int compare(const void* a, const void* b) {
     return 0;
 }
 
-int sort_data(rpa_sys* systems, int count) {
+void sort_data(rpa_sys* systems, int count) {
     if (count == 0) {
         printf("Нет данных для сортировки.\n");
-        return 0;
+        return;
     }
 
     qsort(systems, count, sizeof(rpa_sys), compare);
     printf("Данные отсортированы по кубическому значению точности!\n");
-    return 1;
 }
 
 int add_new_record(rpa_sys* systems, int count) {
@@ -285,32 +265,28 @@ int getRandomNumber(int min, int maxxx) {
     return rand() % (maxxx - min + 1) + min;
 }
 
-int generate_random_name(char* name) {
+void generate_random_name(char* name) {
     char* names[] = { "UiPath", "AutomationAnywhere", "BluePrism", "Primo" };
     int index = rand() % 4;
     strcpy(name, names[index]);
-    return index;
 }
 
-int generate_random_monitor(char* monitor) {
+void generate_random_monitor(char* monitor) {
     char* monitors[] = { "мониторинг в реальном времени", "аналитика производительности", "оповещения об ошибках", "отчеты о выполнениях" };
     int index = rand() % 4;
     strcpy(monitor, monitors[index]);
-    return index;
 }
 
-int generate_random_erp(char* erp) {
+void generate_random_erp(char* erp) {
     char* erps[] = { "Галактика", "1C", "Odoo", "Oracle" };
     int index = rand() % 4;
     strcpy(erp, erps[index]);
-    return index;
 }
 
-int generate_random_diffic(char* difficulty) {
+void generate_random_diffic(char* difficulty) {
     char* diffff[] = { "низкая", "средняя", "высокая" };
     int index = rand() % 3;
     strcpy(difficulty, diffff[index]);
-    return index;
 }
 
 int generate_random_data(rpa_sys* systems, int count) {
