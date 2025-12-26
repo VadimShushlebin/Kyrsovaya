@@ -7,15 +7,21 @@
 
 #define MAX 100
 
+typedef enum {
+    LOW,
+    MEDIUM,
+    HIGH
+} Level;
+
 typedef struct {
     char name[50];
-    char ai[20];
+    Level ai;
     int proc;
     char monitor[100];
     float accuracy;
     double cost;
     char erp[100];
-    char dif[20];
+    Level difficulty;
 } rpa_sys;
 
 rpa_sys input_data();
@@ -33,7 +39,6 @@ int generate_random_data(rpa_sys* systems, int count);
 void generate_random_name(char* name);
 void generate_random_monitor(char* monitor);
 void generate_random_erp(char* erp);
-void generate_random_diffic(char* difficulty);
 
 int main() {
     system("chcp 1251");
@@ -110,10 +115,21 @@ int show_menu() {
 
 rpa_sys input_data() {
     rpa_sys system;
+    int choice;
+
     printf("Название системы: ");
     scanf("%49s", system.name);
-    printf("Уровень ИИ (низкий/средний/высокий): ");
-    scanf("%19s", system.ai);
+
+    printf("Уровень ИИ (1-низкий, 2-средний, 3-высокий): ");
+    scanf("%d", &choice);
+    if (choice >= 1 && choice <= 3) {
+        system.ai = (Level)(choice - 1);
+    }
+    else {
+        printf("Неверный выбор, установлено значение по умолчанию (низкий)\n");
+        system.ai = LOW;
+    }
+
     printf("Количество процессов: ");
     scanf("%d", &system.proc);
     printf("Возможности мониторинга: ");
@@ -124,20 +140,44 @@ rpa_sys input_data() {
     scanf("%lf", &system.cost);
     printf("Интеграция с ERP: ");
     scanf(" %[^\n]", system.erp);
-    printf("Сложность настройки (низкая/средняя/высокая): ");
-    scanf("%19s", system.dif);
+
+    printf("Сложность настройки (1-низкая, 2-средняя, 3-высокая): ");
+    scanf("%d", &choice);
+    if (choice >= 1 && choice <= 3) {
+        system.difficulty = (Level)(choice - 1);
+    }
+    else {
+        printf("Неверный выбор, установлено значение по умолчанию (низкая)\n");
+        system.difficulty = LOW;
+    }
+
     return system;
 }
 
 void output_data(rpa_sys system) {
     printf("Название: %s\n", system.name);
-    printf("Уровень ИИ: %s\n", system.ai);
+
+    printf("Уровень ИИ: ");
+    switch (system.ai) {
+    case LOW: printf("низкий"); break;
+    case MEDIUM: printf("средний"); break;
+    case HIGH: printf("высокий"); break;
+    }
+    printf("\n");
+
     printf("Количество процессов: %d\n", system.proc);
     printf("Возможности мониторинга: %s\n", system.monitor);
     printf("Точность выполнения: %.1f%%\n", system.accuracy);
     printf("Стоимость лицензии: %.2f\n", system.cost);
     printf("Интеграция с ERP: %s\n", system.erp);
-    printf("Сложность настройки: %s\n", system.dif);
+
+    printf("Сложность настройки: ");
+    switch (system.difficulty) {
+    case LOW: printf("низкая"); break;
+    case MEDIUM: printf("средняя"); break;
+    case HIGH: printf("высокая"); break;
+    }
+    printf("\n");
 }
 
 int load_from_file(rpa_sys* systems) {
@@ -283,12 +323,6 @@ void generate_random_erp(char* erp) {
     strcpy(erp, erps[index]);
 }
 
-void generate_random_diffic(char* difficulty) {
-    char* diffff[] = { "низкая", "средняя", "высокая" };
-    int index = rand() % 3;
-    strcpy(difficulty, diffff[index]);
-}
-
 int generate_random_data(rpa_sys* systems, int count) {
     int num_r;
 
@@ -304,13 +338,16 @@ int generate_random_data(rpa_sys* systems, int count) {
         int index = count + i;
 
         generate_random_name(systems[index].name);
-        generate_random_diffic(systems[index].ai);
+
+        systems[index].ai = (Level)(rand() % 3);
+
         systems[index].proc = getRandomNumber(0, 100);
         generate_random_monitor(systems[index].monitor);
         systems[index].accuracy = getRandomNumber(0, 100);
         systems[index].cost = getRandomNumber(10, 1000);
         generate_random_erp(systems[index].erp);
-        generate_random_diffic(systems[index].dif);
+
+        systems[index].difficulty = (Level)(rand() % 3);
     }
 
     count += num_r;
