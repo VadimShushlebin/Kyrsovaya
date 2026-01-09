@@ -7,7 +7,9 @@
 
 RPA_Systems_Manager/
 ├── kurc.c
+
 ├── rpa_systems.bin
+
 └── README.md
 
 ## Выполняемые программой операции
