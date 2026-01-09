@@ -124,9 +124,15 @@
 
 ## Контрольные примеры
 
+Исходный массив.
+
 <img width="558" height="722" alt="image" src="https://github.com/user-attachments/assets/a58e2671-5fb6-4d7e-b67d-a2b2309a2569" />\
 
+КП для сортировки.
+
 <img width="565" height="723" alt="image" src="https://github.com/user-attachments/assets/39c80ca5-7ef3-4725-a43c-b72e4c185414" />
+
+КП для поиска.
 
 <img width="560" height="314" alt="image" src="https://github.com/user-attachments/assets/85b8c7b8-73bc-4e84-ab4b-b6344563a42e" />
 
