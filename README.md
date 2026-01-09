@@ -5,7 +5,7 @@
 
 ## Структура проекта
 
-RPA_Systems_Manager/
+RPA_Systems/
 ├── kurc.c
 
 ├── rpa_systems.bin
