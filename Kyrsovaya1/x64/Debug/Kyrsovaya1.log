@@ -1,0 +1,5 @@
+﻿  kurs1.c
+D:\программирование\Kyrsovaya1\kurs1.c(50,11): warning C4244: функция: преобразование "time_t" в "unsigned int", возможна потеря данных
+D:\программирование\Kyrsovaya1\kurs1.c(224,17): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+D:\программирование\Kyrsovaya1\kurs1.c(290,18): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+  Kyrsovaya1.vcxproj -> D:\программирование\Kyrsovaya1\x64\Debug\Kyrsovaya1.exe
