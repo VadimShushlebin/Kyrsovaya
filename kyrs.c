@@ -16,86 +16,114 @@ typedef enum {
 
 // Структура для хранения данных о RPA-системе
 typedef struct {
-    char name[50]; // Название системы
-    Level ai; // Уровень ИИ
-    int proc; // Количество процессов
-    char monitor[100]; // Возможности мониторинга
-    float accuracy; // Точность выполнения
-    double cost; // Стоимость лицензии
-    char erp[100]; // Интеграция с ERP
-    Level difficulty; // Сложность настройки
+    char name[50];
+    Level ai;
+    int proc;
+    char monitor[100];
+    float accuracy;
+    double cost;
+    char erp[100];
+    Level difficulty;
 } rpa_sys;
 
 // Прототипы функций
-rpa_sys input_data(); // Ввод данных с клавиатуры
-void output_data(rpa_sys system);  // Вывод данных на экран
-int show_menu(); // Отображение меню
-int load_from_file(rpa_sys* systems); // Загрузка из файла
-void view_all_records(rpa_sys* systems, int count); // Просмотр всех записей
-int search_by_range(rpa_sys* systems, int count); // Поиск по диапазону стоимости
-void sort_data(rpa_sys* systems, int count); // Сортировка данных
-int add_new_record(rpa_sys* systems, int count); // Добавление новой записи
-int save_to_file(rpa_sys* systems, int count); // Сохранение в файл
-int compare(const void* a, const void* b); // Функция сравнения для qsort
-int getRandomNumber(int min, int maxxx); // Генерация случайного числа
-int generate_random_data(rpa_sys* systems, int count); // Генерация случайных данных
+rpa_sys input_data();
+void output_data(rpa_sys system);
+int show_menu();
+int load_from_file(rpa_sys* systems);
+void view_all_records(rpa_sys* systems, int count);
+int search_by_range(rpa_sys* systems, int count);
+void sort_data(rpa_sys* systems, int count);
+int add_new_record(rpa_sys* systems, int count);
+int save_to_file(rpa_sys* systems, int count);
+int compare(const void* a, const void* b);
+int getRandomNumber(int min, int maxxx);
+int generate_random_data(rpa_sys* systems, int count);
 
 // Главная функция
 int main() {
     system("chcp 1251");
-    rpa_sys systems[MAX];  // Массив структур
-    int count = 0;         // Количество записей
-    int choice = 0;        // Выбор пользователя в меню
+    rpa_sys systems[MAX];
+    int count = 0;
+    int choice = 0;
 
-    srand(time(NULL));  // Инициализация генератора случайных чисел
+    srand(time(NULL));
 
-    // Главный цикл программы
     while (choice != 8) {
         choice = show_menu();
 
         switch (choice) {
-        case 1:  // Загрузка данных из файла
+        case 1:
             count = load_from_file(systems);
-            break;
-        case 2:  // Просмотр всех записей
-            view_all_records(systems, count);
-            break;
-        case 3:  // Поиск по диапазону
-        {
-            int found = search_by_range(systems, count);
-            if (found == 0) {
-                printf("Не найдено записей в указанном диапазоне.\n");
+            if (count == 0) {
+                printf("\nФайл не найден или пуст.\n");
             }
             else {
-                printf("Найдено записей: %d\n", found);
+                printf("\nЗагружено %d записей.\n", count);
             }
-        }
-        break;
-        case 4:  // Сортировка данных
-            sort_data(systems, count);
             break;
-        case 5:  // Добавление новой записи
-            count = add_new_record(systems, count);
-            break;
-        case 6:  // Сохранение в файл
-        {
-            int saved = save_to_file(systems, count);
-            if (saved == count) {
-                printf("\nУспешно сохранено %d записей в файл 'rpa_systems.txt'.\n", count);
+        case 2:
+            if (count == 0) {
+                printf("\nНет данных для отображения.\n");
             }
             else {
-                printf("\nОшибка при сохранении данных! Сохранено только %d из %d записей.\n", saved, count);
+                view_all_records(systems, count);
             }
-        }
-        break;
-        case 7:  // Генерация случайных данных
-            count = generate_random_data(systems, count);
             break;
-        case 8:  // Выход
-            printf("\nВыход из программы\n");
+        case 3:
+            if (count == 0) {
+                printf("\nНет данных для поиска.\n");
+            }
+            else {
+                int found = search_by_range(systems, count);
+                printf("\nНайдено записей: %d\n", found);
+            }
+            break;
+        case 4:
+            if (count == 0) {
+                printf("\nНет данных для сортировки.\n");
+            }
+            else {
+                sort_data(systems, count);
+                printf("\nДанные отсортированы.\n");
+            }
+            break;
+        case 5:
+            if (count >= MAX) {
+                printf("\nДостигнут максимальный лимит записей.\n");
+            }
+            else {
+                count = add_new_record(systems, count);
+                printf("\nЗапись добавлена. Всего записей: %d\n", count);
+            }
+            break;
+        case 6:
+            if (count == 0) {
+                printf("\nНет данных для сохранения.\n");
+            }
+            else {
+                int saved = save_to_file(systems, count);
+                if (saved == count) {
+                    printf("\nСохранено %d записей.\n", count);
+                }
+                else {
+                    printf("\nОшибка сохранения.\n");
+                }
+            }
+            break;
+        case 7:
+            if (count >= MAX) {
+                printf("\nДостигнут максимальный лимит записей.\n");
+            }
+            else {
+                count = generate_random_data(systems, count);
+            }
+            break;
+        case 8:
+            printf("\nВыход из программы.\n");
             break;
         default:
-            printf("\nНеверный выбор\n");
+            printf("\nНеверный выбор.\n");
         }
 
         if (choice != 8) {
@@ -135,13 +163,7 @@ rpa_sys input_data() {
 
     printf("Уровень ИИ (1-низкий, 2-средний, 3-высокий): ");
     scanf("%d", &choice);
-    if (choice >= 1 && choice <= 3) {
-        system.ai = (Level)(choice - 1);
-    }
-    else {
-        printf("Неверный выбор, установлено значение по умолчанию (низкий)\n");
-        system.ai = LOW;
-    }
+    system.ai = (choice >= 1 && choice <= 3) ? (Level)(choice - 1) : LOW;
 
     printf("Количество процессов: ");
     scanf("%d", &system.proc);
@@ -160,13 +182,7 @@ rpa_sys input_data() {
 
     printf("Сложность настройки (1-низкая, 2-средняя, 3-высокая): ");
     scanf("%d", &choice);
-    if (choice >= 1 && choice <= 3) {
-        system.difficulty = (Level)(choice - 1);
-    }
-    else {
-        printf("Неверный выбор, установлено значение по умолчанию (низкая)\n");
-        system.difficulty = LOW;
-    }
+    system.difficulty = (choice >= 1 && choice <= 3) ? (Level)(choice - 1) : LOW;
 
     return system;
 }
@@ -200,37 +216,19 @@ void output_data(rpa_sys system) {
 
 // Загрузка данных из бинарного файла
 int load_from_file(rpa_sys* systems) {
-    FILE* file = fopen("rpa_systems.txt", "rb");
-    int count = 0;
-
+    FILE* file = fopen("rpa_systems.bin", "rb");
     if (file == NULL) {
-        printf("\nФайл 'rpa_systems.txt' не найден.\n");
         return 0;
     }
 
-    // Чтение данных из файла в массив структур
-    count = fread(systems, sizeof(rpa_sys), MAX, file);
+    int count = fread(systems, sizeof(rpa_sys), MAX, file);
     fclose(file);
-
-    if (count > 0) {
-        printf("\nУспешно загружено %d записей из файла 'rpa_systems.txt'.\n", count);
-    }
-    else {
-        printf("\nФайл пуст или содержит некорректные данные.\n");
-    }
 
     return count;
 }
 
 // Просмотр всех записей
 void view_all_records(rpa_sys* systems, int count) {
-    printf("\nПросмотр всех записей\n");
-    if (count == 0) {
-        printf("Записей нет. Сначала добавьте запись.\n");
-        return;
-    }
-
-    printf("\nВсе записи (%d)\n", count);
     for (int i = 0; i < count; i++) {
         printf("\n--- Запись %d ---\n", i + 1);
         output_data(systems[i]);
@@ -242,19 +240,13 @@ int search_by_range(rpa_sys* systems, int count) {
     double min, maxx;
     int found = 0;
 
-    if (count == 0) {
-        printf("Сначала добавьте запись\n");
-        return 0;
-    }
-
-    printf("Введите первое число диапазона: ");
+    printf("Введите минимальную стоимость: ");
     scanf("%lf", &min);
-    printf("Введите второе число диапазона: ");
+    printf("Введите максимальную стоимость: ");
     scanf("%lf", &maxx);
 
-    // Поиск записей, стоимость которых входит в диапазон
     for (int i = 0; i < count; i++) {
-        if (systems[i].cost <= maxx && systems[i].cost >= min) {
+        if (systems[i].cost >= min && systems[i].cost <= maxx) {
             printf("\n--- Запись %d ---\n", found + 1);
             output_data(systems[i]);
             found++;
@@ -264,107 +256,73 @@ int search_by_range(rpa_sys* systems, int count) {
     return found;
 }
 
-// Функция сравнения для сортировки (по кубическому корню точности)
+// Функция сравнения для сортировки
 int compare(const void* a, const void* b) {
     const rpa_sys* system1 = (const rpa_sys*)a;
     const rpa_sys* system2 = (const rpa_sys*)b;
 
-    // Вычисление кубического корня из точности
     double cubicA = pow(system1->accuracy / 100, 1.0 / 3.0);
     double cubicB = pow(system2->accuracy / 100, 1.0 / 3.0);
 
-    // Сортировка по убыванию
     if (cubicA < cubicB) return 1;
     if (cubicA > cubicB) return -1;
     return 0;
 }
 
-// Сортировка данных с помощью qsort
+// Сортировка данных
 void sort_data(rpa_sys* systems, int count) {
-    if (count == 0) {
-        printf("Нет данных для сортировки.\n");
-        return;
-    }
-
     qsort(systems, count, sizeof(rpa_sys), compare);
-    printf("Данные отсортированы по кубическому значению точности!\n");
 }
 
 // Добавление новой записи
 int add_new_record(rpa_sys* systems, int count) {
-    printf("\nДобавление новой записи\n");
-    if (count < MAX) {
-        systems[count] = input_data();
-        count++;
-        printf("Запись успешно добавлена! Всего записей: %d\n", count);
-    }
-    else {
-        printf("Достигнут максимальный лимит записей (%d)!\n", MAX);
-    }
-    return count;
+    systems[count] = input_data();
+    return count + 1;
 }
 
 // Сохранение данных в бинарный файл
 int save_to_file(rpa_sys* systems, int count) {
-    FILE* file = fopen("rpa_systems.txt", "wb");
-    int result = 0;
-
+    FILE* file = fopen("rpa_systems.bin", "wb");
     if (file == NULL) {
-        printf("\nОшибка при создании файла 'rpa_systems.txt'!\n");
         return 0;
     }
 
-    // Запись массива структур в файл
-    result = fwrite(systems, sizeof(rpa_sys), count, file);
+    int result = fwrite(systems, sizeof(rpa_sys), count, file);
     fclose(file);
 
     return result;
 }
 
-// Генерация случайного числа в заданном диапазоне
+// Генерация случайного числа
 int getRandomNumber(int min, int maxxx) {
     return rand() % (maxxx - min + 1) + min;
 }
 
-// Генерация заданного количества случайных записей
+// Генерация случайных данных
 int generate_random_data(rpa_sys* systems, int count) {
     int num_r;
     char* names[] = { "UiPath", "AutomationAnywhere", "BluePrism", "Primo" };
-    char* monitors[] = {
-        "мониторинг в реальном времени",
-        "аналитика производительности",
-        "оповещения об ошибках",
-        "отчеты о выполнениях"
-    };
+    char* monitors[] = { "мониторинг в реальном времени","аналитика производительности","оповещения об ошибках", "отчеты о выполнениях"};
     char* erps[] = { "Галактика", "1C", "Odoo", "Oracle" };
 
     printf("Сколько записей сгенерировать? ");
     scanf("%d", &num_r);
 
     if (count + num_r > MAX) {
-        printf("Нельзя добавить %d записей. Максимум можно добавить %d записей.\n", num_r, MAX - count);
-        return count;
+        num_r = MAX - count;
     }
 
     for (int i = 0; i < num_r; i++) {
         int index = count + i;
-
-        // Генерация случайных строк
-        int name_index = rand() % 4;
-        int monitor_index = rand() % 4;
-        int erp_index = rand() % 4;
-
-        strcpy(systems[index].name, names[name_index]);
+        strcpy(systems[index].name, names[rand() % 4]);
         systems[index].ai = (Level)(rand() % 3);
         systems[index].proc = getRandomNumber(0, 100);
-        strcpy(systems[index].monitor, monitors[monitor_index]);
-        systems[index].accuracy = getRandomNumber(0, 100);
-        systems[index].cost = getRandomNumber(10, 1000);
-        strcpy(systems[index].erp, erps[erp_index]);
+        strcpy(systems[index].monitor, monitors[rand() % 4]);
+        systems[index].accuracy = (float)getRandomNumber(0, 100);
+        systems[index].cost = (double)getRandomNumber(10, 1000);
+        strcpy(systems[index].erp, erps[rand() % 4]);
         systems[index].difficulty = (Level)(rand() % 3);
     }
 
-    count += num_r;
-    printf("Добавлено %d случайных записей. Всего записей: %d\n", num_r, count);
-    return count;
+    return count + num_r;
 }
